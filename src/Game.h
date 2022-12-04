@@ -9,9 +9,17 @@ typedef struct
     float radius;
     float friction;
     bool active;
-    bool canJump; 
-    bool is_jumping; 
-} actor_t;
+    bool canJump;
+    bool is_jumping;
+} player_t;
+
+typedef struct
+{
+    Vector2 pos;
+    Vector2 velocity;
+    float radius;
+    bool active;
+} entity_t;
 
 typedef struct
 {
@@ -32,9 +40,9 @@ typedef struct
     _a < _b ? _a : _b;       \
 })
 
-void limit_x_velocity(actor_t *actor, int max_vel);
-void UpdatHorizontalPhysics(actor_t *actor);
-void UpdateVerticalPhysics(actor_t *actor, Rectangle ground);
+void limit_x_velocity(player_t *player, int max_vel);
+void UpdatHorizontalPhysics(player_t *player);
+void UpdateVerticalPhysics(player_t *player, Rectangle ground);
 void StartTimer(gtimer_t *timer, float lifetime);
 void UpdateTimer(gtimer_t *timer);
 bool TimerDone(gtimer_t *timer);

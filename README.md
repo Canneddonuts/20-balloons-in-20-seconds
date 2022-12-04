@@ -13,3 +13,7 @@ ALL CODE OTHER THAN raylib.h IS UNDER THE GNU GPL v3
 11/30/22 1.1 BUGFIX
 
 added framerate independence and fixed jumping
+
+12/4/22 1.2 LAST BUGFIX
+
+better balloon spawns

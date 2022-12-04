@@ -9,9 +9,9 @@
 #define MAX_BALLOONS 5
 
 int screen = 0;
-actor_t player = { 0 };
-actor_t balloons[MAX_BALLOONS] = { 0 };
-actor_t enemy = { 0 };
+player_t player = { 0 };
+entity_t balloons[MAX_BALLOONS] = { 0 };
+entity_t enemy = { 0 };
 bool gameover = false, Debug = false;
 int collected = 0;
 Rectangle ground = {
@@ -60,13 +60,13 @@ void Init(void)
   player.friction = -3.5;
 
   for (int i = 0; i < MAX_BALLOONS; ++i) {
-      balloons[i].pos = (Vector2){ (float)GetRandomValue(0, GetScreenWidth()+50), (float)GetRandomValue(0, 50) };
+      balloons[i].pos = (Vector2){ (float)GetRandomValue(0, GetScreenWidth()-50), -15 };
       balloons[i].velocity = (Vector2){ 0, 100.0f };
       balloons[i].radius = 15;
       balloons[i].active = true;
   }
 
-  enemy.pos = (Vector2){ (float)GetScreenWidth() - 25, 380 };
+  enemy.pos = (Vector2){ (float)GetScreenWidth() - 22, 380 };
   enemy.velocity = (Vector2){ 150.0f, 0 };
   enemy.radius = 20;
 
@@ -103,7 +103,7 @@ void Update(void)
         for (int i = 0; i < MAX_BALLOONS; ++i) {
             if (balloons[i].active) balloons[i].pos.y += balloons[i].velocity.y * GetFrameTime();
             else {
-                balloons[i].pos.y = (float)GetRandomValue(0, 50);
+                balloons[i].pos.y = -15;
                 balloons[i].pos.x = (float)GetRandomValue(0, GetScreenWidth()-50);
                 balloons[i].active = true;
             }
@@ -140,19 +140,19 @@ void Draw(void)
 
           DrawText("Canneddonuts 2022", 5, GetScreenHeight() - 20, 20, GRAY);
 
-          DrawText(" v1.1", GetScreenWidth() - 40, GetScreenHeight() - 20, 20, GREEN);
+          DrawText("v1.2", GetScreenWidth() - 35, GetScreenHeight() - 20, 20, GREEN);
         } break;
         case 1: {
           if (!gameover) {
             DrawText(TextFormat("%d", (int)gameTimer.Lifetime), GetScreenWidth()/2 - 90, 100, 150, LIGHTGRAY);
 
             if (Debug) {
-                          DrawText(TextFormat("X VELOCITY: %f", player.velocity.x), GetScreenWidth()/2 - 150, 100, 20, GREEN);
-             DrawText(TextFormat("X POS: %f", player.pos.x), GetScreenWidth()/2 - 150, 120, 20, GREEN);
-            DrawText(TextFormat("X ACCELERATION: %f", player.acceleration.x), GetScreenWidth()/2 - 150, 140, 20, GREEN);
-            DrawText(TextFormat("Y VELOCITY: %f", player.velocity.y), GetScreenWidth()/2 - 150, 160, 20, GREEN);
-            DrawText(TextFormat("Y POS: %f", player.pos.y), GetScreenWidth()/2 - 150, 180, 20, GREEN);
-            DrawText(TextFormat("Y ACCELERATION: %f", player.acceleration.y), GetScreenWidth()/2 - 150, 200, 20, GREEN);
+                DrawText(TextFormat("X VELOCITY: %f", player.velocity.x), GetScreenWidth()/2 - 150, 100, 20, GREEN);
+                DrawText(TextFormat("X POS: %f", player.pos.x), GetScreenWidth()/2 - 150, 120, 20, GREEN);
+                DrawText(TextFormat("X ACCELERATION: %f", player.acceleration.x), GetScreenWidth()/2 - 150, 140, 20, GREEN);
+                DrawText(TextFormat("Y VELOCITY: %f", player.velocity.y), GetScreenWidth()/2 - 150, 160, 20, GREEN);
+                DrawText(TextFormat("Y POS: %f", player.pos.y), GetScreenWidth()/2 - 150, 180, 20, GREEN);
+                DrawText(TextFormat("Y ACCELERATION: %f", player.acceleration.y), GetScreenWidth()/2 - 150, 200, 20, GREEN);
             }
 
             DrawCircleV(player.pos, player.radius, BLUE);
