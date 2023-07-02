@@ -17,3 +17,7 @@ added framerate independence and fixed jumping
 12/4/22 1.2 LAST BUGFIX
 
 better balloon spawns
+
+7/2/23 1.3 GAMEPAD SUPPORT
+
+added gamepad support

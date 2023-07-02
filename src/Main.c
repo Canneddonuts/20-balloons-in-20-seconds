@@ -5,27 +5,28 @@
 #endif
 
 #include "Game.h"
+#include "Controls.h"
 
 #define MAX_BALLOONS 5
 
-int screen = 0;
-player_t player = { 0 };
-entity_t balloons[MAX_BALLOONS] = { 0 };
-entity_t enemy = { 0 };
-bool gameover = false, Debug = false;
-int collected = 0;
-Rectangle ground = {
+static int screen = 0;
+static player_t player = { 0 };
+static entity_t balloons[MAX_BALLOONS] = { 0 };
+static entity_t enemy = { 0 };
+static bool gameover = false, Debug = false;
+static int collected = 0;
+static Rectangle ground = {
     0,
     400,
     0,
     50
 };
-gtimer_t gameTimer = { 0 };
+static gtimer_t gameTimer = { 0 };
 
-void Init(void);
-void Update(void);
-void Draw(void);
-void UpdateDrawFrame(void);
+static void Init(void);
+static void Update(void);
+static void Draw(void);
+static void UpdateDrawFrame(void);
 
 
 int main(void)
@@ -60,7 +61,10 @@ void Init(void)
   player.friction = -3.5;
 
   for (int i = 0; i < MAX_BALLOONS; ++i) {
-      balloons[i].pos = (Vector2){ (float)GetRandomValue(0, GetScreenWidth()-50), -15 };
+      balloons[i].pos = (Vector2) {
+        (float)GetRandomValue(0, GetScreenWidth()-50),
+        (float)GetRandomValue(-100, 0)
+      };
       balloons[i].velocity = (Vector2){ 0, 100.0f };
       balloons[i].radius = 15;
       balloons[i].active = true;
@@ -80,7 +84,7 @@ void Update(void)
   if (IsKeyPressed(KEY_D)) Debug = !Debug;
 
   switch (screen) {
-    case 0: if (IsKeyPressed(KEY_ENTER)) screen = 1; break;
+    case 0: if (INPUT_OPTION_PRESSED) screen = 1; break;
     case 1: {
       UpdateTimer(&gameTimer);
 
@@ -116,7 +120,7 @@ void Update(void)
         // player wall collision
         if ((player.pos.x <= player.radius) || (player.pos.x >= (GetScreenWidth() - player.radius))) { player.velocity.x *= -2; }
       } else {
-        if (IsKeyPressed(KEY_ENTER)) Init();
+        if (INPUT_OPTION_PRESSED) Init();
       }
     } break;
     default: break;
@@ -136,11 +140,11 @@ void Draw(void)
         case 0: {
           DrawText("20 balloons in 20 seconds", 30, 20, 30, BLACK);
 
-          DrawText("PRESS ENTER", GetScreenWidth()/3, GetScreenHeight() - 170, 20, RED);
+          DrawText("PRESS ENTER OR START", GetScreenWidth()/4, GetScreenHeight() - 170, 20, RED);
 
           DrawText("Canneddonuts 2022", 5, GetScreenHeight() - 20, 20, GRAY);
 
-          DrawText("v1.2", GetScreenWidth() - 35, GetScreenHeight() - 20, 20, GREEN);
+          DrawText("v1.3", GetScreenWidth() - 35, GetScreenHeight() - 20, 20, GREEN);
         } break;
         case 1: {
           if (!gameover) {
@@ -171,13 +175,13 @@ void Draw(void)
 
               DrawText(TextFormat("Score was %d balloons", collected), GetScreenWidth()/2 - 120, 200, 20, BLACK);
 
-              DrawText("PRESS ENTER", GetScreenWidth()/2 - 90, 240, 20, RED);
+              DrawText("PRESS ENTER OR START", GetScreenWidth()/2 - 130, 240, 20, RED);
           } else {
               DrawText("GAME OVER", GetScreenWidth()/2 - 150, 100, 50, RED);
 
               DrawText(TextFormat("Score was %d balloons", collected), GetScreenWidth()/2 - 120, 200, 20, BLACK);
 
-              DrawText("PRESS ENTER", GetScreenWidth()/2 - 90, 240, 20, RED);
+              DrawText("PRESS ENTER OR START", GetScreenWidth()/2 - 130, 240, 20, RED);
           }
         } break;
         default: break;

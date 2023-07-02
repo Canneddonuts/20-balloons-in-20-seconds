@@ -3,6 +3,7 @@
 #include "../include/raylib.h"
 
 #include "Game.h"
+#include "Controls.h"
 
 void limit_x_velocity(player_t *player, int max_vel)
 {
@@ -15,8 +16,8 @@ void UpdatHorizontalPhysics(player_t *player)
 {
   player->acceleration.x = 0;
 
-  if (IsKeyDown(KEY_LEFT)) player->acceleration.x -= 2000;
-  if (IsKeyDown(KEY_RIGHT)) player->acceleration.x += 2000;
+  if (INPUT_LEFT_DOWN) player->acceleration.x -= 2000;
+  if (INPUT_RIGHT_DOWN) player->acceleration.x += 2000;
 
   player->acceleration.x += player->velocity.x * player->friction;
 
@@ -34,7 +35,7 @@ void UpdateVerticalPhysics(player_t *player, Rectangle ground)
   else player->canJump = false;
 
   if (player->canJump) {
-    if ((IsKeyPressed(KEY_Z) || IsKeyPressed(KEY_UP))) { player->is_jumping = true; player->velocity.y += 430.0f; }
+    if (INPUT_JUMP_PRESSED) { player->is_jumping = true; player->velocity.y += 430.0f; }
   }
 
   if (!CheckCollisionCircleRec(player->pos, player->radius, ground)) player->velocity.y -= 1000.0f * GetFrameTime();
